@@ -3,49 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Chatbot Nemotron</title>
-
+    <title>NVIDIA Nemotron 3 Ultra - API Tester</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
     <div class="chat-container">
 
+        <!-- Header -->
         <div class="chat-header">
-            <h1>Chatbot AI</h1>
-        </div>
-
-        <div id="chat-box" class="chat-box">
-
-            <div class="message bot">
-                <div class="message-content">
-                    Halo! Ada yang bisa saya bantu?
+            <div class="header-left">
+                <div class="bot-avatar">🤖</div>
+                <div class="header-info">
+                    <h1>Chatbot AI</h1>
+                    <div class="status-indicator">
+                        <span class="dot"></span>
+                        <span id="api-status-text">API Ready</span>
+                    </div>
                 </div>
             </div>
-
+            <button id="reset-btn" class="reset-btn" title="Reset Percakapan">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+            </button>
         </div>
 
-        <form id="chat-form" class="chat-form">
+        <!-- Model Info Card -->
+        <div class="model-card">
+            <div class="model-icon">⚡</div>
+            <div class="model-details">
+                <div class="model-name">NVIDIA Nemotron 3 Ultra</div>
+                <div class="model-desc">OpenRouter API Connection Tester</div>
+            </div>
+        </div>
 
+        <!-- Chat Box -->
+        <div id="chat-box" class="chat-box">
+            <div class="message bot">
+                <div class="message-content">
+                    Halo! Silakan ketik pesan atau gunakan tombol tes cepat di bawah untuk menguji koneksi API Nemotron.
+                    <div class="message-time">12:00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Form -->
+        <form id="chat-form" class="chat-form">
+            <button type="button" id="quick-ping-btn" class="quick-btn" title="Kirim Tes Cepat">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            </button>
             <input
                 type="text"
                 id="user-input"
-                placeholder="Ketik pesan..."
+                placeholder="Ketik pesan tes..."
                 autocomplete="off"
                 required
             >
-
-            <button type="submit">
-                Kirim
+            <button type="submit" id="send-btn" class="send-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
             </button>
-
         </form>
 
     </div>
 
     <script src="script.js"></script>
-
 </body>
 </html>
