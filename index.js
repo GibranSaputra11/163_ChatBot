@@ -60,4 +60,79 @@ app.post("/api/chat", async (req, res) => {}
         res.setHeader("Content-Type", "text/event-stream");
         res.setHeader("Cache-Control", "no-cache");
         res.setHeader("Connection", "keep-alive");
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+
+        let buffer = "";
+        
+        while (true) {
+            const { done, value } = await reader.read();
+
+            if (done) {
+                break;
+            }
+
+            buffer += decoder.decode(value, { 
+                stream: true 
+            });
+
+            const lines = buffer.split("\n");
+
+            // Simpan baris terakhir ke buffer untuk dibaca di iterasi berikutnya         
+            buffer = lines.pop();
+
+            for (const line of lines) {
+
+                const trimmedLine = line.trim();
+
+                if (!trimmedLine) {
+                    continue;
+                }
+
+                if (!trimmedLine.startsWith("data: ")) {
+                    continue;
+                }
+
+                const data = trimmedline.slice(5).trim();
+
+                if (data === "[DONE]") {
+                    continue;
+                }
+
+                try {
+                    const parsedData = JSON.parse(data);
+
+                    const content = parsedData.choices[0].delta.content;
+
+                    if (content) {
+                        res.write(`data: ${JSON.stringify(content)}\n\n`);
+                    }
+                }catch (error) {
+                    console.error(
+                        "Gagal parsing streaaming data dari OpenRouter:",
+                        error
+                    );
+                }
+            }
+        }
+        res.write("data: [DONE]\n\n");
+        res.end();
+    }
+    catch (error) {
+        console.error("Server Error", error);
+
+        if (!res.headersSent) {
+            res.status(500).json({
+                error: "Terjadi kesalahan pada server"
+            })
+        } else {
+            res.write(
+                `data: ${JSON.stringify(
+                    "Terjadi Kesalaham pad server"
+                )}\n\n`
+            );
+
+            res.end();
+        }
     }
