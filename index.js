@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
     res.redirect("/index.html");
 });
 
-app.post("/api/chat", async (req, res) => {}
+app.post("/api/chat", async (req, res) => {
     try {
         const { message } = req.body;
 
@@ -136,3 +136,4 @@ app.post("/api/chat", async (req, res) => {}
             res.end();
         }
     }
+});   
