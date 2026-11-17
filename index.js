@@ -15,10 +15,15 @@ app.get("/", (req, res) => {
 
 app.post("/api/chat", async (req, res) => {
     try {
-        const { message } = req.body;
+        const { message, messages } = req.body;
+        
+        let chatMessages = messages;
+        if (!chatMessages && message) {
+            chatMessages = [{ role: "user", content: message }];
+        }
 
-        if (!message || Array.isArray(message)) {
-            return res.status(400).json({ error: "Pesan harus berupa array" });
+        if (!chatMessages || !Array.isArray(chatMessages) || chatMessages.length === 0) {
+            return res.status(400).json({ error: "Pesan tidak boleh kosong" });
         }
         if (!process.env.OPENROUTER_API_KEY) {
             return res.status(500).json({
@@ -38,7 +43,7 @@ app.post("/api/chat", async (req, res) => {
 
                 body: JSON.stringify({
                     model: process.env.OPENROUTER_MODEL,
-                    messages,
+                    messages: chatMessages,
                     temperature: 0.7,
                     max_tokens: 1000,
                     stream: true
@@ -94,7 +99,7 @@ app.post("/api/chat", async (req, res) => {
                     continue;
                 }
 
-                const data = trimmedline.slice(5).trim();
+                const data = trimmedLine.slice(5).trim();
 
                 if (data === "[DONE]") {
                     continue;
