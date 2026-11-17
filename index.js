@@ -25,4 +25,24 @@ app.post("/api/chat", async (req, res) => {}
                 error: "API key belum diatur di file .env"
             });
         }
+         // Request ke OpenRouter
+        const response = await fetch(
+            "https://openrouter.ai/api/v1/chat/completions",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`
+                },
+
+                body: JSON.stringify({
+                    model: process.env.OPENROUTER_MODEL,
+                    messages,
+                    temperature: 0.7,
+                    max_tokens: 1000,
+                    stream: true
+                })
+            }
+        );
     }
